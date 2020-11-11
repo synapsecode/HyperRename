@@ -16,9 +16,10 @@ def exception_handler(func):
 	return wrapper
 
 @exception_handler
-def hyper_renamer(directory, old_name, new_name, ignored_folders=[], ignored_extensions=[]):
+def hyper_renamer(directory, old_name, new_name, ignored_folders=[], ignored_extensions=[], ignored_files=[]):
 	ignored_folders = tuple(ignored_folders)
 	ignored_extensions = tuple(ignored_extensions)
+	ignored_files = tuple(ignored_files)
 
 	folders = []
 	for f in os.walk(directory):
@@ -28,7 +29,7 @@ def hyper_renamer(directory, old_name, new_name, ignored_folders=[], ignored_ext
 			files = f[2]
 			#Renaming All Files
 			for fn in files:
-				if(old_name in fn and not fn.endswith(ignored_extensions)):
+				if(old_name in fn and not fn.endswith(ignored_extensions) and not fn in ignored_files):
 					orig_path = os.path.join(cfld, fn)
 					new_path = os.path.join(cfld, fn.replace(old_name, new_name))
 					os.rename(orig_path, new_path)
@@ -59,7 +60,7 @@ def hyper_renamer(directory, old_name, new_name, ignored_folders=[], ignored_ext
 	directory = directory.replace(old_name, new_name)
 	for f in os.walk(directory):
 		for file in f[2]:
-			if(not file.endswith(ignored_extensions)):
+			if(not file.endswith(ignored_extensions) and file not in ignored_files):
 				src = ""
 				try:
 					with open(os.path.join(f[0], file), "r") as x:
@@ -80,8 +81,9 @@ if(__name__ == '__main__'):
 	parser.add_argument('directory', help="Directory To Recursively Rename", type= str)
 	parser.add_argument('--oldname', '-o', help="Old Name", type= str)
 	parser.add_argument('--newname', '-n', help="New Name", type= str)
-	parser.add_argument('--ignored_folders', '-if', help="Ignored Folders", type= str, default="")
+	parser.add_argument('--ignored_folders', '-ifd', help="Ignored Folders", type= str, default="")
 	parser.add_argument('--ignored_extensions', '-ie', help="Ignored Extensions", type= str, default="")
+	parser.add_argument('--ignored_files', '-ifl', help="Ignored Files", type= str, default="")
 
 	args = parser.parse_args()
 	print("-------- HyperRename v0.1 --------")
@@ -94,7 +96,8 @@ if(__name__ == '__main__'):
 
 	i_folders = [] if args.ignored_folders == "" else args.ignored_folders.replace("[", "").replace("]", "").replace(", ", " ").replace(",", " ").split(" ")
 	i_ext = [] if args.ignored_extensions == "" else args.ignored_extensions.replace("[", "").replace("]", "").replace(", ", " ").replace(",", " ").split(" ")
+	i_files = [] if args.ignored_files == "" else args.ignored_files.replace("[", "").replace("]", "").replace(", ", " ").replace(",", " ").split(" ")
 
-	hyper_renamer(directory, old_name, new_name, ignored_folders=i_folders, ignored_extensions=i_ext)
+	hyper_renamer(directory, old_name, new_name, ignored_folders=i_folders, ignored_extensions=i_ext, ignored_files=i_files)
 
 	print("-------------- Done ---------------")
