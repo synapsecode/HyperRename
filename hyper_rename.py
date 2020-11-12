@@ -91,6 +91,7 @@ if(__name__ == '__main__'):
 	print("-------- HyperRename v0.1 --------")
 
 	directory = args.directory
+	directory = directory.replace("/", "\\") if directory.endswith("/") else directory+"\\" if(not directory.endswith("\\")) else directory
 	old_name = args.oldname
 	new_name = args.newname
 	i_folders = []
