@@ -9,7 +9,7 @@ def exception_handler(func):
 			func(*args, **kwargs)
 		except PermissionError:
 			print()
-			print("Access Denied: You are Probably in the Same Directory as the one you're trying to rename")
+			print("Access Denied: You are Probably in the Same Directory as the one you're trying to rename\nOr A file that you're trying to open, already has an open instance")
 		except Exception as e:
 			print()
 			print(f"FATAL ERROR: {e}")
@@ -24,7 +24,9 @@ def hyper_renamer(directory, old_name, new_name, ignored_folders=[], ignored_ext
 	folders = []
 	for f in os.walk(directory):
 		cfld = f[0]
-		if(not cfld.endswith(ignored_folders)):
+		#if(not cfld.endswith(ignored_folders)):
+		# print(cfld, ignored_folders)
+		if(not any(xfd in cfld for xfd in ignored_folders)):
 			folders.append(cfld)
 			files = f[2]
 			#Renaming All Files
@@ -60,7 +62,7 @@ def hyper_renamer(directory, old_name, new_name, ignored_folders=[], ignored_ext
 	directory = directory.replace(old_name, new_name)
 	for f in os.walk(directory):
 		for file in f[2]:
-			if(not file.endswith(ignored_extensions) and file not in ignored_files):
+			if(not file.endswith(ignored_extensions) and file not in ignored_files and not any(xfd in f[0] for xfd in ignored_folders)):
 				src = ""
 				try:
 					with open(os.path.join(f[0], file), "r") as x:
@@ -98,6 +100,7 @@ if(__name__ == '__main__'):
 	i_ext = [] if args.ignored_extensions == "" else args.ignored_extensions.replace("[", "").replace("]", "").replace(", ", " ").replace(",", " ").split(" ")
 	i_files = [] if args.ignored_files == "" else args.ignored_files.replace("[", "").replace("]", "").replace(", ", " ").replace(",", " ").split(" ")
 
+	# print(i_folders, i_ext, i_files)
 	hyper_renamer(directory, old_name, new_name, ignored_folders=i_folders, ignored_extensions=i_ext, ignored_files=i_files)
 
 	print("-------------- Done ---------------")
