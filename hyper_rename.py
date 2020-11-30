@@ -94,7 +94,7 @@ if(__name__ == '__main__'):
 	directory = directory.replace("/", "\\") if directory.endswith("/") else directory+"\\" if(not directory.endswith("\\")) else directory
 	old_name = args.oldname
 	new_name = args.newname
-	i_folders = []
+
 	i_ext = []
 
 	i_folders = [] if args.ignored_folders == "" else args.ignored_folders.replace("[", "").replace("]", "").replace(", ", " ").replace(",", " ").split(" ")
