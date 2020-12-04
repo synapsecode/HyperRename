@@ -60,6 +60,8 @@ hren -o Test -n Rest -ifl "[hello.js, test.py]"
 ```
 hren -o Test -n Rest -ie "[.pyc, .exe]"
 ```
+
+You can combine these arguements in any way you like!
    
 
 ## Bugs and Problems
