@@ -1,6 +1,6 @@
 # HyperRename
  A Python & Bash Script that can be used to rename Files, Folders, and Subfolders and also replace in files (Currently Supports Windows only)
- This is incredibly useful if you want to rename a folder structure that contains a word in multiple sub-branches. This script recursively goes over each and every file directory and edits not only the filename but also foldernames and its subcontents!
+ This is incredibly useful if you want to rename a folder structure that contains a word in multiple sub-branches. This script recursively goes over each and every file directory and edits not only the filename but also foldernames and its subcontents!!
  
  ## Simple Example
  Suppose you have a nested Structure with the word Rest appearing multiple times both in filenames, foldernames and inside the individual files like this:
